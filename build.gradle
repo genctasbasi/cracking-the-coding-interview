@@ -7,6 +7,11 @@ buildscript {
         jcenter()
         
     }
+
+    ext.mockito_version = '2.27.0'
+    ext.nhaarman_mockito_version = '2.1.0'
+    ext.test_runner_version = '1.1.0'
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
