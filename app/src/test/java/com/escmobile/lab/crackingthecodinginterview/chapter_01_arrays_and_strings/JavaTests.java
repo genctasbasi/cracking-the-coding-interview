@@ -3,10 +3,11 @@ package com.escmobile.lab.crackingthecodinginterview.chapter_01_arrays_and_strin
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.escmobile.lab.crackingthecodinginterview.Utils.asList;
 
 public class JavaTests {
 
@@ -115,60 +116,194 @@ public class JavaTests {
         assert (true);
     }
 
-    List<Integer> asList(char[] array) {
+    /**
+     * Write a method to replace all space in a string with %20.
+     * <p>
+     * Solution 1: In
+     * <p>
+     * This is O(n2), there is a better way with O(n): Count the spaces first then loop the array
+     * once and move all chars to the end (book solution that I couldn't think!)
+     */
+    @Test
+    public void test_1_3_urlify() {
+        String input1 = "Mr John Smith    ";
 
-        List<Integer> list = new ArrayList<Integer>();
+        int length = 13;
+        int lastIndex = length - 1;
 
-        for (int c : array) {
-            list.add(c);
+        char[] inputCharArr = input1.toCharArray();
+        int currentIndex = lastIndex;
+
+        while (currentIndex >= 0) {
+            char charNow = inputCharArr[currentIndex];
+
+            if (charNow == ' ') {
+                for (int j = lastIndex; j > currentIndex; j--) {
+                    // shift 2 chars right
+                    inputCharArr[j + 2] = inputCharArr[j];
+                }
+
+                inputCharArr[currentIndex] = '%';
+                inputCharArr[currentIndex + 1] = '2';
+                inputCharArr[currentIndex + 2] = '0';
+
+                length = length + 2;
+                lastIndex = length - 1;
+            }
+
+            currentIndex--;
         }
 
-        return list;
+        Assert.assertEquals(String.valueOf(inputCharArr), "Mr%20John%20Smith");
     }
 
+    /**
+     * Write a method to replace all space in a string with %20.
+     * <p>
+     * Solution 2: With StringBuilder.
+     * This is the cheating option. Apparently I didn't get the question at first. It's just too easy with additional structure.
+     */
     @Test
-    public void test_includes() {
-        String string1 = "one sting ole str another";
-        String string2 = "e str";
+    public void test_1_3_urlify_with_string_builder() {
 
-        boolean isPerm = false;
+        String input1 = "Mr John Smith    ";
+        int input2 = 13;
 
-        if (string1.equalsIgnoreCase(string2)) {
-            assert (isPerm);
-            return;
-        }
+        StringBuilder sb = new StringBuilder();
 
-        String lookIn;
-        String lookFor;
+        char[] inputCharArr = input1.toCharArray();
 
-        if (string1.length() > string2.length()) {
-            lookIn = string1;
-            lookFor = string2;
-        } else {
-            lookIn = string2;
-            lookFor = string1;
-        }
+        for (int i = 0; i < input2; i++) {
+            char charNow = inputCharArr[i];
 
-        int lookForIndex = 0;
-        char charLookFor;
-
-        for (int i = 0; i < lookIn.length(); i++) {
-
-            if (lookForIndex >= lookFor.length()) {
-                isPerm = true;
-                break;
-            }
-
-            char charNow = lookIn.charAt(i);
-            charLookFor = lookFor.charAt(lookForIndex);
-
-            if (charNow == charLookFor) {
-                lookForIndex++;
+            if (charNow == ' ') {
+                sb.append("%20");
             } else {
-                charLookFor = 0;
+                sb.append(charNow);
             }
         }
 
-        assert (isPerm);
+        Assert.assertEquals("Mr%20John%20Smith", sb.toString());
+    }
+
+    /**
+     * Given a string, write a function to check if it is a permutation of a palindrome.
+     * Input: Tact Coa
+     * Output: True (permutations: "taco cat", "atco cta" etc)
+     * <p>
+     * Solution: I will count each character. There can several even number counts but only 0 or 1 odd number count
+     */
+    @Test
+    public void test_1_4_palindrome_permutation() {
+
+        String input1 = "Tact Coa";
+        char[] inputArray = input1.toLowerCase().toCharArray();
+        boolean isPermutation = true;
+
+        // assumption here, discuss with the interviewer.
+        // If we cannot make an assumption, we could use lists maybe
+        int[] charCounts = new int[128];
+
+        for (char c : inputArray) {
+            if (c != ' ')
+                charCounts[c] = charCounts[c] + 1;
+        }
+
+        boolean hasOdd = false;
+        for (int i : charCounts) {
+            if (i % 2 == 1) {
+                if (hasOdd) { // this is the second odd then, which means it cannot be a permutation
+                    isPermutation = false;
+                    break;
+                }
+                hasOdd = true;
+            }
+        }
+
+        Assert.assertTrue(isPermutation);
+    }
+
+
+    /**
+     * Given two strings, write a function to check if they are one edit (or zero edits) away.
+     * Edit is: Insert char, remove char, replace char.
+     * <p>
+     * Example:
+     * pale, ple -> true
+     * pale, paale -> true
+     * pales, pale -> true
+     * pale, bale -> true
+     * pale, bake -> false
+     */
+    @Test
+    public void test_1_5_one_away() {
+
+        String inputFrom = "pale";
+        String inputTo = "ple";
+
+        int changeCount = 0;
+        int inputToIndex = 0;
+        for (int i = 0; i < inputFrom.length(); i++) {
+
+            char charFrom = inputFrom.charAt(i);
+            char charTo = inputTo.charAt(inputToIndex);
+
+            if (charFrom != charTo) {
+                changeCount++;
+
+                if (inputFrom.length() == inputTo.length()) {
+                    // option 1:
+                    // this is the char replacement option.
+                    // don't change the inputToIndex. keeping this for readability purposes
+                } else if (inputFrom.length() > inputTo.length()) {
+                    // option 2:
+                    // a char is deleted from inputTo
+                    inputToIndex--; // so that indexes match after the deletion
+                } else if (inputFrom.length() < inputTo.length()) {
+                    // option 3:
+                    // a char is added from inputTo
+                    inputToIndex++; // so that indexes match after the deletion
+                }
+            }
+
+            inputToIndex++; // to match inputFrom index (i)
+        }
+
+        assert (changeCount <= 1);  // 0 or 1 change is fine
+    }
+
+    /**
+     * Implement a method to perform basic string compression using the counts of repeated characters.
+     * For example, the string aabccccaaa would become a2b1c5a3. If the compressed string would not become
+     * smaller than the original string, your method should return the original string.
+     * You can assume the string has only uppercase and lowercase letters (a-z)
+     */
+    @Test
+    public void test_1_6_string_compression() {
+        String input = "aabbccccaaa";
+
+        char[] inputArray = input.toCharArray();
+        char currentChar = inputArray[0];
+        int currentCount = 0;
+        StringBuilder sb = new StringBuilder();
+
+        for (char c : inputArray) {
+
+            if (c != currentChar) {
+                // char changed
+                sb.append(currentChar);
+                sb.append(currentCount);
+
+                currentCount = 0;
+            }
+
+            currentCount++;
+            currentChar = c;
+        }
+
+        sb.append(currentChar);
+        sb.append(currentCount);
+
+        Assert.assertEquals("a2b2c4a3", sb.toString());
     }
 }
