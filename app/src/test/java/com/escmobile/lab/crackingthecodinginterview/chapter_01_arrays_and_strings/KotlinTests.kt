@@ -9,6 +9,9 @@ class KotlinTests {
     /**
      * Implement an algorithm to determine if a string has all unique characters.
      * What if you cannot use additional data structures?
+     *
+     * Time complexity: O(n)
+     * Space complexity: O(1)
      */
     @Test
     fun test_1_1_is_unique() {
