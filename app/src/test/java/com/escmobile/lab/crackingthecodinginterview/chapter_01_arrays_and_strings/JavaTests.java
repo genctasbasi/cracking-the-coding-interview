@@ -223,7 +223,6 @@ public class JavaTests {
         Assert.assertTrue(isPermutation);
     }
 
-
     /**
      * Given two strings, write a function to check if they are one edit (or zero edits) away.
      * Edit is: Insert char, remove char, replace char.

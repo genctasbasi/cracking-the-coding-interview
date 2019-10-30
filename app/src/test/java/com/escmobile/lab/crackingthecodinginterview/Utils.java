@@ -16,23 +16,39 @@ public class Utils {
         return list;
     }
 
+    public static Node addNode(Integer data, Node node) {
+
+        if (node == null) {
+            Node nodeN = new Node();
+            nodeN.data = data;
+            return nodeN;
+        }
+
+        if (data < node.data) {
+            node.left = addNode(data, node.left);
+            return node;
+        } else {
+            node.right = addNode(data, node.right);
+            return node;
+        }
+    }
 
     /**
      *
-     * @param lookIn
-     * @param lookFor
-     * @return
+     * @param lookIn The string to search in
+     * @param lookFor The string to search for
+     * @return true if lookIn exits in lookFor
      */
     public static boolean includes(String lookIn, String lookFor) {
 
-        if (lookIn.equalsIgnoreCase(lookFor)) return false;
+        if (lookIn.equalsIgnoreCase(lookFor)) return true;
 
         int lookForIndex = 0;
         char charLookFor;
 
         for (int i = 0; i < lookIn.length(); i++) {
 
-            if (lookForIndex >= lookFor.length()) return true;
+            if (lookForIndex >= lookFor.length()) return false;
 
             char charNow = lookIn.charAt(i);
             charLookFor = lookFor.charAt(lookForIndex);
@@ -44,6 +60,6 @@ public class Utils {
             }
         }
 
-        return false;
+        return true;
     }
 }
