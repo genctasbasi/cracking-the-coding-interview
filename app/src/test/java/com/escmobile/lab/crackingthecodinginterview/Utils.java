@@ -16,6 +16,22 @@ public class Utils {
         return list;
     }
 
+    /**
+     * Creates a linked list from the elements provided and returns the linkedList
+     *
+     * @param elements linked list elements
+     */
+    public static LinkedList createLinkedList(List<Integer> elements) {
+
+        LinkedList linkedList = new LinkedList();
+
+        for (int i = 0; i < elements.size(); i++) {
+            linkedList.append(elements.get(i));
+        }
+
+        return linkedList;
+    }
+
     public static Node addNode(Integer data, Node node) {
 
         if (node == null) {
@@ -34,8 +50,7 @@ public class Utils {
     }
 
     /**
-     *
-     * @param lookIn The string to search in
+     * @param lookIn  The string to search in
      * @param lookFor The string to search for
      * @return true if lookIn exits in lookFor
      */
