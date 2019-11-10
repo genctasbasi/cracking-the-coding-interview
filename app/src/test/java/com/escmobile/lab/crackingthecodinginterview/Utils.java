@@ -32,6 +32,19 @@ public class Utils {
         return linkedList;
     }
 
+    public static Node createBST(List<Integer> elements) {
+
+        LinkedList linkedList = new LinkedList();
+        Node node = null;
+
+        for (int i = 0; i < elements.size(); i++) {
+            node = addNode(elements.get(i), node);
+        }
+
+        return node;
+    }
+
+
     public static Node addNode(Integer data, Node node) {
 
         if (node == null) {
