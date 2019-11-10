@@ -305,13 +305,45 @@ public class TreeAndGraphTests {
         // make it non-BST
         head.right.right.data = 1;
 
-        Node common = getFirstCommonAncestor(head.left.left, head.left.right.right);
+        Node common = getFirstCommonAncestor(head, head.right.left.left, head.right.right.right.right);
 
-        assert (common.data == 5);
+        assert (common.data == 15);
     }
 
-    Node getFirstCommonAncestor(Node node1, Node node2) {
-        return null;
+    private Node getFirstCommonAncestor(Node currentCommon, Node node1, Node node2) {
+
+        boolean isLeftCommon = isCommon(currentCommon.left, node1, node2);
+        boolean isRightCommon = isCommon(currentCommon.right, node1, node2);
+
+        if (isLeftCommon) {
+            return getFirstCommonAncestor(currentCommon.left, node1, node2);
+        } else if (isRightCommon) {
+            return getFirstCommonAncestor(currentCommon.right, node1, node2);
+        }
+
+        return currentCommon;
+    }
+
+    private boolean isCommon(Node head, Node node1, Node node2) {
+
+        boolean isNode1Child = isChild(head, node1);
+        boolean isNode2Child = isChild(head, node2);
+
+        return isNode1Child && isNode2Child;
+    }
+
+    private boolean isChild(Node head, Node child) {
+
+        if (head == null || child == null)
+            return false;
+
+        if (head.data == child.data)
+            return true;
+
+        boolean hasLeft = isChild(head.left, child);
+        boolean hasRight = isChild(head.right, child);
+
+        return hasLeft || hasRight;
     }
 }
 
