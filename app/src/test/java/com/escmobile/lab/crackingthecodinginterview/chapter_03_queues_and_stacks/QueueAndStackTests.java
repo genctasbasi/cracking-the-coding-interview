@@ -1,7 +1,7 @@
 package com.escmobile.lab.crackingthecodinginterview.chapter_03_queues_and_stacks;
 
 import com.escmobile.lab.crackingthecodinginterview.NodeG;
-import com.escmobile.lab.crackingthecodinginterview.chapter_05_bit_operations.Queue;
+import com.escmobile.lab.crackingthecodinginterview.Queue;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.escmobile.lab.crackingthecodinginterview.chapter_05_bit_operations;
+package com.escmobile.lab.crackingthecodinginterview;
 
 import com.escmobile.lab.crackingthecodinginterview.NodeG;
 

@@ -4,7 +4,7 @@ import com.escmobile.lab.crackingthecodinginterview.Node;
 import com.escmobile.lab.crackingthecodinginterview.NodeG;
 import com.escmobile.lab.crackingthecodinginterview.SampleGraph;
 import com.escmobile.lab.crackingthecodinginterview.Vertex;
-import com.escmobile.lab.crackingthecodinginterview.chapter_05_bit_operations.Queue;
+import com.escmobile.lab.crackingthecodinginterview.Queue;
 
 import org.junit.Test;
 
@@ -345,5 +345,118 @@ public class TreeAndGraphTests {
 
         return hasLeft || hasRight;
     }
+
+    @Test
+    public void test_4_10_check_sub_tree() {
+
+        List<Integer> list = Arrays.asList(11, 5, 15, 3, 7, 13, 18, 0, 90, 99, 12, 6, 9);
+        Node head = createBST(list);
+
+        List<Integer> subList = Arrays.asList(7, 6, 9);
+        List<Integer> subListFail = Arrays.asList(7, 6, 15);
+        Node subHead = createBST(subList);
+        Node subHeadFail = createBST(subListFail);
+
+        Boolean isSub = isSub(head, subHead);
+        assert (isSub != null && isSub);
+    }
+
+    private boolean matchingStarted = false;
+
+    /**
+     * I think BFS or DFS doesn't matter? - will check with the book.
+     * I'll implement DFS here.
+     *
+     * @param head    to look in
+     * @param subHead to look for
+     * @return true if subtree
+     */
+
+    private Boolean isSub(Node head, Node subHead) {
+
+        if (head == null)
+            return null;
+
+        if (head.data == subHead.data) {  // match
+            boolean isIdentical = isIdentical(head, subHead);
+            if (isIdentical) return true;
+        }
+
+        Boolean isSubL = isSub(head.left, subHead);
+        if (isSubL != null && isSubL) return true;
+
+        Boolean isSubR = isSub(head.right, subHead);
+
+        return isSubR != null && isSubR;
+    }
+
+    private boolean isIdentical(Node head, Node subHead) {
+
+        if (head == null && subHead == null)
+            return true;
+
+        if (head == null) return false;
+        if (subHead == null) return false;
+
+        if (head.data != subHead.data) return false;
+
+        boolean isLeftIdentical = isIdentical(head.left, subHead.left);
+        boolean isRightIdentical = isIdentical(head.right, subHead.right);
+
+        return isLeftIdentical && isRightIdentical;
+    }
+
+    @Test
+    public void insertNodeToBST() {
+        List<Integer> list = Arrays.asList(11, 5, 15, 3, 7, 13, 18, 0, 90, 99, 12, 6, 9);
+        Node head = createBST(list);
+
+        insert(head, 55);
+    }
+
+    private void insert(Node head, int data) {
+
+        // 11, 5, 15
+        // data: 7
+        if (head == null) {
+
+
+            return;
+        }
+
+        if (data <= head.data) {
+
+            if (head.left == null) {
+                head.left = new Node(data);
+            } else {
+
+                if (data <= head.left.data) {
+                    Node insertNode = new Node(data);
+                    insertNode.left = head.left;
+                    head.left = insertNode;
+                } else {
+                    insert(head.left, data);
+                }
+            }
+
+
+        } else {
+
+            if (head.right == null) {
+                head.right = new Node(data);
+            } else {
+
+                if (data <= head.right.data) {
+                    Node insertNode = new Node(data);
+                    insertNode.right = head.right;
+                    head.right = insertNode;
+                } else {
+                    insert(head.right, data);
+                }
+
+            }
+        }
+    }
 }
+
 

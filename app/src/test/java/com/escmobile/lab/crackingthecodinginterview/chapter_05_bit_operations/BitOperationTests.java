@@ -7,14 +7,19 @@ public class BitOperationTests {
     @Test
     public void test_5_0_get_bit() {
 
-        int bitValue = getBit(6, 1);
+        int bitValue = getBit(6, 2);
 
         int c = 1 << 1;
     }
 
-    int getBit(int num, int i) {
-        // num is 0110
-        return (1 << i);
+    private int getBit(int num, int i) {
+        // num is 6, 0110
+        // create a mask
+
+        int mask = 1 << 2;
+
+
+        return 0;
     }
 }
 
